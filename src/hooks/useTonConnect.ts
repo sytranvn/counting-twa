@@ -3,11 +3,11 @@ import { Sender, SenderArguments } from '@ton/core';
 
 export function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
-
   return {
     sender: {
       send: async (args: SenderArguments) => {
-        tonConnectUI.sendTransaction({
+        console.log('Begin send')
+        await tonConnectUI.sendTransaction({
           messages: [
             {
               address: args.to.toString(),

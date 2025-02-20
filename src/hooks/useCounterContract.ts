@@ -4,6 +4,7 @@ import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { Address, OpenedContract } from '@ton/core';
 import { useTonConnect } from './useTonConnect';
+import { sleep } from '../utils';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -19,10 +20,10 @@ export function useCounterContract() {
     return client.open(contract) as OpenedContract<Counter>;
   }, [client]);
 
+
   useEffect(() => {
     async function getValue() {
       if (!counterContract) return;
-      setVal(null);
       const val = await counterContract.getCounter();
       setVal(Number(val));
     }
@@ -32,8 +33,23 @@ export function useCounterContract() {
   return {
     value: val,
     address: counterContract?.address.toString(),
-    sendIncrement: () => {
-      return counterContract?.sendIncrement(sender);
+    sendIncrement: async () => {
+      const state = await client?.getContractState(counterContract?.address!)
+      try {
+        await counterContract?.sendIncrement(sender);
+        while (true) {
+          const newState = await client?.getContractState(counterContract?.address!)
+          if (state?.blockId.seqno !== newState?.blockId.seqno) {
+            break;
+          }
+          await sleep(1500);
+        }
+
+        const val = await counterContract?.getCounter();
+        setVal(Number(val));
+      } catch (err) {
+        console.error('Error:', err)
+      }
     },
   };
 }

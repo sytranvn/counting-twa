@@ -4,7 +4,7 @@ import { useCounterContract } from './hooks/useCounterContract'
 import { useTonConnect } from './hooks/useTonConnect';
 
 function App() {
-  const {connected} = useTonConnect();
+  const { connected } = useTonConnect();
   const { value, address, sendIncrement } = useCounterContract();
 
   return (
@@ -22,7 +22,7 @@ function App() {
           <div>{value ?? 'Loading...'}</div>
         </div>
 
-        <button disabled={!connected} onClick={()=> sendIncrement()}>Increment</button>
+        <button disabled={!connected} onClick={sendIncrement}>Increment</button>
       </div>
     </div>
   );
