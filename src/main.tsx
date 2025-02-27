@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { TonConnectUIProvider } from '@tonconnect/ui-react'
 
-const manifestUrl = 'https://counting-twa.sytranvn.dev/tonconnect-manifest.json';
+const manifestUrl = `${import.meta.env.VITE_APP_URL}/tonconnect-manifest.json`;
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <TonConnectUIProvider manifestUrl={manifestUrl}>
