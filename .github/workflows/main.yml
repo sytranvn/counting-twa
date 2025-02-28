@@ -18,6 +18,8 @@ jobs:
         run: npm run build
         env:
           CI: true
+          VITE_APP_TITLE: "Ton Counter"
+          VITE_APP_URL: "https://counting-twa.sytranvn.dev"
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
